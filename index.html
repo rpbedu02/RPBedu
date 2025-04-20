@@ -1,0 +1,620 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RPBedu - Educational Web Applications Hub</title>
+  <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.0.0/css/all.min.css" rel="stylesheet">
+  <style>
+    /* Root Variables for Consistent Styling */
+    :root {
+      --primary-color: #3498db;
+      --secondary-color: #2ecc71;
+      --accent-color: #f1c40f;
+      --dark-color: #34495e;
+      --light-color: #ecf0f1;
+      --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      --transition: all 0.3s ease;
+      --radius: 8px;
+    }
+    
+    /* General Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background-color: #f9f9f9;
+    }
+    
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    
+    h1, h2, h3 {
+      margin-bottom: 0.5em;
+      color: var(--dark-color);
+    }
+    
+    p {
+      margin-bottom: 1rem;
+    }
+    
+    a {
+      text-decoration: none;
+      color: var(--primary-color);
+      transition: var(--transition);
+    }
+    
+    a:hover {
+      color: #217dbb;
+    }
+    
+    .btn {
+      display: inline-block;
+      background-color: var(--primary-color);
+      color: white;
+      padding: 12px 24px;
+      border-radius: var(--radius);
+      text-transform: uppercase;
+      font-weight: 600;
+      letter-spacing: 1px;
+      transition: var(--transition);
+      box-shadow: var(--shadow);
+      border: none;
+      cursor: pointer;
+    }
+    
+    .btn:hover {
+      background-color: #217dbb;
+      transform: translateY(-3px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+      color: white;
+    }
+    
+    .btn-coming-soon {
+      background-color: #ccc;
+      color: #666;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+    
+    section {
+      padding: 80px 0;
+    }
+    
+    .section-title {
+      text-align: center;
+      margin-bottom: 50px;
+      position: relative;
+    }
+    
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 4px;
+      background-color: var(--primary-color);
+      border-radius: 2px;
+    }
+    
+    /* Navigation */
+    .navbar {
+      background-color: white;
+      box-shadow: var(--shadow);
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+    }
+    
+    .navbar-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px;
+    }
+    
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--dark-color);
+    }
+    
+    .logo span {
+      color: var(--primary-color);
+    }
+    
+    .nav-links {
+      display: flex;
+      list-style: none;
+    }
+    
+    .nav-links li {
+      margin-left: 30px;
+    }
+    
+    .nav-links a {
+      color: var(--dark-color);
+      font-weight: 500;
+    }
+    
+    .nav-links a:hover {
+      color: var(--primary-color);
+    }
+    
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: var(--dark-color);
+      cursor: pointer;
+    }
+    
+    /* Hero Section */
+    .hero {
+      background: linear-gradient(135deg, rgba(52, 152, 219, 0.9) 0%, rgba(46, 204, 113, 0.9) 100%), url('/api/placeholder/1200/600') center/cover no-repeat;
+      color: white;
+      text-align: center;
+      padding: 100px 0 80px;
+      margin-top: 60px;
+    }
+    
+    .hero-content {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    .hero h1 {
+      font-size: 3rem;
+      margin-bottom: 20px;
+      color: white;
+    }
+    
+    .hero p {
+      font-size: 1.2rem;
+      margin-bottom: 30px;
+    }
+    
+    .icon-container {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    
+    .text-8xl {
+      font-size: 6rem;
+    }
+    
+    /* Tools Showcase */
+    .tools {
+      background-color: white;
+    }
+    
+    .tools-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+    }
+    
+    .tool-card {
+      background-color: white;
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+    
+    .tool-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+    }
+    
+    .tool-image {
+      height: 160px;
+      background-color: var(--light-color);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+    
+    .icon-wrapper {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+    }
+    
+    .text-2xl {
+      font-size: 1.5rem;
+    }
+    
+    .bg-blue-100 { background-color: #dbeafe; }
+    .text-blue-600 { color: #2563eb; }
+    .bg-green-100 { background-color: #d1fae5; }
+    .text-green-600 { color: #059669; }
+    .bg-purple-100 { background-color: #e0e7ff; }
+    .text-purple-600 { color: #7c3aed; }
+    
+    .tool-content {
+      padding: 20px;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .tool-content h3 {
+      color: var(--dark-color);
+      margin-bottom: 15px;
+    }
+    
+    .tool-content p {
+      margin-bottom: 20px;
+      flex-grow: 1;
+    }
+    
+    .tool-content .btn {
+      align-self: flex-start;
+    }
+    
+    /* About Section */
+    .about {
+      background-color: var(--light-color);
+    }
+    
+    .about-content {
+      max-width: 800px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    
+    /* Footer */
+    footer {
+      background-color: var(--dark-color);
+      color: white;
+      padding: 50px 0 20px;
+    }
+    
+    .footer-content {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      margin-bottom: 40px;
+    }
+    
+    .footer-column {
+      flex: 1 1 250px;
+      margin-bottom: 30px;
+    }
+    
+    .footer-column h3 {
+      color: white;
+      margin-bottom: 20px;
+      position: relative;
+      padding-bottom: 10px;
+    }
+    
+    .footer-column h3::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 50px;
+      height: 2px;
+      background-color: var(--primary-color);
+    }
+    
+    .footer-column ul {
+      list-style: none;
+    }
+    
+    .footer-column ul li {
+      margin-bottom: 10px;
+    }
+    
+    .footer-column a {
+      color: #bdc3c7;
+      transition: var(--transition);
+    }
+    
+    .footer-column a:hover {
+      color: var(--primary-color);
+      padding-left: 5px;
+    }
+    
+    .copyright {
+      text-align: center;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      font-size: 0.9rem;
+      color: #bdc3c7;
+    }
+    
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        right: 0;
+        background-color: white;
+        flex-direction: column;
+        padding: 20px;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+      }
+      
+      .nav-links.active {
+        display: flex;
+      }
+      
+      .nav-links li {
+        margin: 10px 0;
+      }
+      
+      .mobile-menu-btn {
+        display: block;
+      }
+      
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+      
+      section {
+        padding: 60px 0;
+      }
+      
+      .tools-container {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="container navbar-container">
+      <a href="#" class="logo">RPB<span>edu</span></a>
+      <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#tools">Tools</a></li>
+        <li><a href="#about">About</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero" id="hero">
+    <div class="container hero-content">
+      <div class="icon-container">
+        <i class="fas fa-graduation-cap text-8xl text-white"></i>
+      </div>
+      <h1>Education Tool Hub</h1>
+      <p>Hub for accessing our educational web apps</p>
+      <a href="#tools" class="btn">Explore Our Tools</a>
+    </div>
+  </section>
+
+  <!-- Tools Section -->
+  <section class="tools" id="tools">
+    <div class="container">
+      <h2 class="section-title">Our Educational Tools</h2>
+      <div class="tools-container">
+        <!-- Tool Card 1: LearnMaster -->
+        <div class="tool-card">
+          <div class="tool-image">
+            <div class="icon-wrapper bg-blue-100">
+              <i class="fas fa-graduation-cap text-2xl text-blue-600"></i>
+            </div>
+          </div>
+          <div class="tool-content">
+            <h3>LearnMaster</h3>
+            <p>Learning platform that allows uploading of course modules with lecture notes and quizzes</p>
+            <a href="#" class="btn">Launch Tool</a>
+          </div>
+        </div>
+        
+        <!-- Tool Card 2: CourseGeneratorAI -->
+        <div class="tool-card">
+          <div class="tool-image">
+            <div class="icon-wrapper bg-green-100">
+              <i class="fas fa-robot text-2xl text-green-600"></i>
+            </div>
+          </div>
+          <div class="tool-content">
+            <h3>CourseGeneratorAI</h3>
+            <p>Coming soon: Use AI to generate interactive courses from lecture notes</p>
+            <a class="btn btn-coming-soon">Coming Soon</a>
+          </div>
+        </div>
+        
+        <!-- Tool Card 3: FlashcardCreatorAI -->
+        <div class="tool-card">
+          <div class="tool-image">
+            <div class="icon-wrapper bg-purple-100">
+              <i class="fas fa-brain text-2xl text-purple-600"></i>
+            </div>
+          </div>
+          <div class="tool-content">
+            <h3>FlashcardCreatorAI</h3>
+            <p>Coming soon: Use AI to generate and use digital interactive flashcards to enhance memorization and learning</p>
+            <a class="btn btn-coming-soon">Coming Soon</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section class="about" id="about">
+    <div class="container about-content">
+      <h2 class="section-title">About RPBedu</h2>
+      <p>Welcome to RPBedu, your hub for educational tools and resources. Our mission is to empower teachers and students with tools that facilitate learning.</p>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-column">
+          <h3>RPBedu</h3>
+          <p>Your central hub for educational web applications designed to empower teachers and engage students.</p>
+        </div>
+        <div class="footer-column">
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href="#tools">Our Tools</a></li>
+            <li><a href="#about">About Us</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h3>Legal</h3>
+          <ul>
+            <li><a href="#">Terms of Service</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h3>Connect</h3>
+          <ul>
+            <li><a href="#">Contact Us</a></li>
+            <li><a href="#">Feedback</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="copyright">
+        <p>© 2025 RPBedu. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile Navigation Toggle
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const navLinks = document.getElementById('navLinks');
+    
+    mobileMenuBtn.addEventListener('click', () => {
+      navLinks.classList.toggle('active');
+    });
+    
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        const targetId = this.getAttribute('href');
+        if (targetId === '#') return;
+        
+        const targetElement = document.querySelector(targetId);
+        if (targetElement) {
+          window.scrollTo({
+            top: targetElement.offsetTop - 70,
+            behavior: 'smooth'
+          });
+          
+          // Close mobile menu if open
+          if (navLinks.classList.contains('active')) {
+            navLinks.classList.remove('active');
+          }
+        }
+      });
+    });
+    
+    // Navbar background change on scroll
+    window.addEventListener('scroll', function() {
+      const navbar = document.querySelector('.navbar');
+      if (window.scrollY > 50) {
+        navbar.style.boxShadow = '0 4px 10px rgba(0, 0, 0, 0.1)';
+      } else {
+        navbar.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
+      }
+    });
+    
+    // Animation for tool cards on scroll
+    const toolCards = document.querySelectorAll('.tool-card');
+    
+    function checkVisibility() {
+      toolCards.forEach(card => {
+        const rect = card.getBoundingClientRect();
+        const isVisible = (rect.top <= window.innerHeight * 0.8);
+        
+        if (isVisible) {
+          card.style.opacity = '1';
+          card.style.transform = 'translateY(0)';
+        }
+      });
+    }
+    
+    // Set initial state for animations
+    toolCards.forEach(card => {
+      card.style.opacity = '0';
+      card.style.transform = 'translateY(20px)';
+      card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    });
+    
+    // Check visibility on load and scroll
+    window.addEventListener('load', checkVisibility);
+    window.addEventListener('scroll', checkVisibility);
+  </script>
+</body>
+</html>
