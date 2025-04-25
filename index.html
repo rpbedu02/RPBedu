@@ -39,14 +39,13 @@
         }
         </script><!DOCTYPE html>
 <html lang="en">
-<!-- RPBedu, RPBedu Hub, v2025Apr21 -->
+<!-- RPBedu, RPBedu Hub, v2025Apr24 -->
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>RPBedu - Educational Web Applications Hub</title>
   <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.0.0/css/all.min.css" rel="stylesheet">
   <style>
-    /* Root Variables for Consistent Styling */
     :root {
       --primary-color: #3498db;
       --secondary-color: #2ecc71;
@@ -57,47 +56,38 @@
       --transition: all 0.3s ease;
       --radius: 8px;
     }
-    
-    /* General Styles */
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
-    
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       line-height: 1.6;
       color: #333;
       background-color: #f9f9f9;
     }
-    
     .container {
       width: 100%;
       max-width: 1200px;
       margin: 0 auto;
       padding: 0 20px;
     }
-    
     h1, h2, h3 {
       margin-bottom: 0.5em;
       color: var(--dark-color);
     }
-    
     p {
       margin-bottom: 1rem;
     }
-    
     a {
       text-decoration: none;
       color: var(--primary-color);
       transition: var(--transition);
     }
-    
     a:hover {
       color: #217dbb;
     }
-    
     .btn {
       display: inline-block;
       background-color: var(--primary-color);
@@ -112,31 +102,33 @@
       border: none;
       cursor: pointer;
     }
-    
     .btn:hover {
       background-color: #217dbb;
       transform: translateY(-3px);
       box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
       color: white;
     }
-    
     .btn-coming-soon {
       background-color: #ccc;
       color: #666;
       cursor: not-allowed;
       pointer-events: none;
     }
-    
+    .btn-small {
+      padding: 8px 16px;
+      font-size: 0.9rem;
+    }
     section {
       padding: 80px 0;
     }
-    
     .section-title {
       text-align: center;
       margin-bottom: 50px;
       position: relative;
+      font-size: 2rem;
+      font-weight: 600;
+      color: var(--dark-color);
     }
-    
     .section-title::after {
       content: '';
       position: absolute;
@@ -148,8 +140,6 @@
       background-color: var(--primary-color);
       border-radius: 2px;
     }
-    
-    /* Navigation */
     .navbar {
       background-color: white;
       box-shadow: var(--shadow);
@@ -159,42 +149,34 @@
       right: 0;
       z-index: 1000;
     }
-    
     .navbar-container {
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 20px;
     }
-    
     .logo {
       font-size: 1.8rem;
       font-weight: 700;
       color: var(--dark-color);
     }
-    
     .logo span {
       color: var(--primary-color);
     }
-    
     .nav-links {
       display: flex;
       list-style: none;
     }
-    
     .nav-links li {
       margin-left: 30px;
     }
-    
     .nav-links a {
       color: var(--dark-color);
       font-weight: 500;
     }
-    
     .nav-links a:hover {
       color: var(--primary-color);
     }
-    
     .mobile-menu-btn {
       display: none;
       background: none;
@@ -203,8 +185,6 @@
       color: var(--dark-color);
       cursor: pointer;
     }
-    
-    /* Hero Section */
     .hero {
       background: linear-gradient(135deg, rgba(52, 152, 219, 0.9) 0%, rgba(46, 204, 113, 0.9) 100%), url('/api/placeholder/1200/600') center/cover no-repeat;
       color: white;
@@ -212,44 +192,35 @@
       padding: 100px 0 80px;
       margin-top: 60px;
     }
-    
     .hero-content {
       max-width: 800px;
       margin: 0 auto;
     }
-    
     .hero h1 {
       font-size: 3rem;
       margin-bottom: 20px;
       color: white;
     }
-    
     .hero p {
       font-size: 1.2rem;
       margin-bottom: 30px;
     }
-    
     .icon-container {
       display: flex;
       justify-content: center;
       margin-bottom: 20px;
     }
-    
     .text-8xl {
       font-size: 6rem;
     }
-    
-    /* Tools Showcase */
     .tools {
       background-color: white;
     }
-    
     .tools-container {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: 30px;
     }
-    
     .tool-card {
       background-color: white;
       border-radius: var(--radius);
@@ -260,12 +231,10 @@
       flex-direction: column;
       height: 100%;
     }
-    
     .tool-card:hover {
       transform: translateY(-5px);
       box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
     }
-    
     .tool-image {
       height: 160px;
       background-color: var(--light-color);
@@ -274,7 +243,6 @@
       align-items: center;
       overflow: hidden;
     }
-    
     .icon-wrapper {
       width: 60px;
       height: 60px;
@@ -284,76 +252,183 @@
       justify-content: center;
       margin: 0 auto;
     }
-    
     .text-2xl {
       font-size: 1.5rem;
     }
-    
     .bg-blue-100 { background-color: #dbeafe; }
     .text-blue-600 { color: #2563eb; }
     .bg-green-100 { background-color: #d1fae5; }
     .text-green-600 { color: #059669; }
     .bg-purple-100 { background-color: #e0e7ff; }
     .text-purple-600 { color: #7c3aed; }
-    
+    .bg-red-100 { background-color: #fee2e2; }
+    .text-red-600 { color: #dc2626; }
+    .bg-teal-100 { background-color: #ccfbf1; }
+    .text-teal-600 { color: #0f766e; }
+    .bg-indigo-100 { background-color: #e0e7ff; }
+    .text-indigo-600 { color: #4f46e5; }
+    .bg-yellow-100 { background-color: #fef9c3; }
+    .text-yellow-600 { color: #ca8a04; }
+    .bg-green-200 { background-color: #bbf7d0; }
+    .text-green-700 { color: #15803d; }
+    .bg-pink-100 { background-color: #fce7f3; }
+    .text-pink-600 { color: #db2777; }
+    .bg-blue-200 { background-color: #bfdbfe; }
+    .text-blue-700 { color: #1d4ed8; }
     .tool-content {
       padding: 20px;
       flex-grow: 1;
       display: flex;
       flex-direction: column;
     }
-    
     .tool-content h3 {
       color: var(--dark-color);
       margin-bottom: 15px;
     }
-    
     .tool-content p {
       margin-bottom: 20px;
       flex-grow: 1;
     }
-    
     .tool-content .btn {
       align-self: flex-start;
     }
-    
-    /* About Section */
     .about {
       background-color: var(--light-color);
     }
-    
     .about-content {
       max-width: 800px;
       margin: 0 auto;
       text-align: center;
     }
-    
-    /* Footer */
+    .legal-connect {
+      background-color: var(--light-color);
+    }
+    .legal-connect details.section-details {
+      margin: 0 auto;
+      max-width: 1200px;
+      padding: 0 20px;
+    }
+    .legal-connect summary.section-summary {
+      cursor: pointer;
+      font-size: 2rem;
+      font-weight: 600;
+      color: var(--dark-color);
+      text-align: center;
+      padding: 20px 0;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+    }
+    .legal-connect summary.section-summary:hover {
+      color: var(--primary-color);
+    }
+    .legal-connect summary.section-summary::after {
+      content: '';
+      position: absolute;
+      bottom: 5px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 4px;
+      background-color: var(--primary-color);
+      border-radius: 2px;
+    }
+    .legal-connect summary.section-summary::-webkit-details-marker {
+      display: none;
+    }
+    .legal-connect summary.section-summary::before {
+      content: '\f054';
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+      margin-right: 10px;
+      transition: var(--transition);
+    }
+    .legal-connect details[open] summary.section-summary::before {
+      content: '\f078';
+    }
+    .legal-connect-container {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 30px;
+      padding: 50px 0;
+    }
+    .legal-card {
+      background-color: white;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+      padding: 20px;
+    }
+    .legal-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+    }
+    .legal-card details {
+      margin: 0;
+    }
+    .legal-card summary {
+      cursor: pointer;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--dark-color);
+      padding: 10px 0;
+      display: flex;
+      align-items: center;
+      transition: var(--transition);
+    }
+    .legal-card summary:hover {
+      color: var(--primary-color);
+    }
+    .legal-card summary::-webkit-details-marker {
+      display: none;
+    }
+    .legal-card summary::before {
+      content: '\f054';
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+      margin-right: 10px;
+      transition: var(--transition);
+    }
+    .legal-card details[open] summary::before {
+      content: '\f078';
+    }
+    .legal-content {
+      padding: 15px 0;
+    }
+    .legal-content p {
+      margin-bottom: 15px;
+    }
+    .legal-content ul {
+      list-style: disc;
+      padding-left: 20px;
+      margin-bottom: 15px;
+    }
+    .legal-content ul li {
+      margin-bottom: 10px;
+    }
     footer {
       background-color: var(--dark-color);
       color: white;
       padding: 50px 0 20px;
     }
-    
     .footer-content {
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
       margin-bottom: 40px;
     }
-    
     .footer-column {
       flex: 1 1 250px;
       margin-bottom: 30px;
     }
-    
     .footer-column h3 {
       color: white;
       margin-bottom: 20px;
       position: relative;
       padding-bottom: 10px;
     }
-    
     .footer-column h3::after {
       content: '';
       position: absolute;
@@ -363,25 +438,20 @@
       height: 2px;
       background-color: var(--primary-color);
     }
-    
     .footer-column ul {
       list-style: none;
     }
-    
     .footer-column ul li {
       margin-bottom: 10px;
     }
-    
     .footer-column a {
       color: #bdc3c7;
       transition: var(--transition);
     }
-    
     .footer-column a:hover {
       color: var(--primary-color);
       padding-left: 5px;
     }
-    
     .copyright {
       text-align: center;
       padding-top: 20px;
@@ -389,8 +459,6 @@
       font-size: 0.9rem;
       color: #bdc3c7;
     }
-    
-    /* Responsive Styles */
     @media (max-width: 768px) {
       .nav-links {
         display: none;
@@ -403,35 +471,156 @@
         padding: 20px;
         box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
       }
-      
       .nav-links.active {
         display: flex;
       }
-      
       .nav-links li {
         margin: 10px 0;
       }
-      
       .mobile-menu-btn {
         display: block;
       }
-      
       .hero h1 {
         font-size: 2.5rem;
       }
-      
       section {
         padding: 60px 0;
       }
-      
       .tools-container {
         grid-template-columns: 1fr;
       }
     }
+    /* Admin Section Styles */
+    .admin-tools {
+      background-color: var(--light-color);
+    }
+    .admin-tools details.section-details {
+      margin: 0 auto;
+      max-width: 1200px;
+      padding: 0 20px;
+    }
+    .admin-tools summary.section-summary {
+      cursor: pointer;
+      font-size: 2rem;
+      font-weight: 600;
+      color: var(--dark-color);
+      text-align: center;
+      padding: 20px 0;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+    }
+    .admin-tools summary.section-summary:hover {
+      color: var(--primary-color);
+    }
+    .admin-tools summary.section-summary::after {
+      content: '';
+      position: absolute;
+      bottom: 5px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 4px;
+      background-color: var(--primary-color);
+      border-radius: 2px;
+    }
+    .admin-tools summary.section-summary::-webkit-details-marker {
+      display: none;
+    }
+    .admin-tools summary.section-summary::before {
+      content: '\f054';
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+      margin-right: 10px;
+      transition: var(--transition);
+    }
+    .admin-tools details[open] summary.section-summary::before {
+      content: '\f078';
+    }
+    .admin-tools-container {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 30px;
+      padding: 50px 0;
+    }
+    .admin-card {
+      background-color: white;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+      padding: 20px;
+    }
+    .admin-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+    }
+    .admin-form label {
+      display: block;
+      font-size: 0.9rem;
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+      color: var(--dark-color);
+    }
+    .admin-form input, .admin-form select, .admin-form textarea {
+      width: 100%;
+      padding: 10px;
+      font-size: 0.9rem;
+      border: 1px solid #d1d5db;
+      border-radius: var(--radius);
+      margin-bottom: 15px;
+      transition: border-color 0.2s;
+    }
+    .admin-form input:focus, .admin-form select:focus, .admin-form textarea:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+    }
+    .admin-form textarea {
+      height: 100px;
+      resize: vertical;
+    }
+    .admin-form .error {
+      color: #ef4444;
+      font-size: 0.8rem;
+      margin-bottom: 10px;
+      display: none;
+    }
+    .admin-tools-list {
+      margin-top: 20px;
+    }
+    .tool-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    .tool-item:last-child {
+      border-bottom: none;
+    }
+    .tool-item-actions {
+      display: flex;
+      gap: 10px;
+    }
+    .alert {
+      padding: 15px;
+      border-radius: var(--radius);
+      margin-bottom: 20px;
+      display: none;
+    }
+    .alert-success {
+      background-color: #d1fae5;
+      color: #065f46;
+    }
+    .alert-error {
+      background-color: #fee2e2;
+      color: #991b1b;
+    }
   </style>
 </head>
 <body>
-  <!-- Navigation -->
   <nav class="navbar">
     <div class="container navbar-container">
       <a href="#" class="logo">RPB<span>edu</span></a>
@@ -443,7 +632,6 @@
     </div>
   </nav>
 
-  <!-- Hero Section -->
   <section class="hero" id="hero">
     <div class="container hero-content">
       <div class="icon-container">
@@ -455,57 +643,15 @@
     </div>
   </section>
 
-  <!-- Tools Section -->
   <section class="tools" id="tools">
     <div class="container">
       <h2 class="section-title">Our Educational Tools</h2>
-      <div class="tools-container">
-        <!-- Tool Card 1: LearnMaster -->
-        <div class="tool-card">
-          <div class="tool-image">
-            <div class="icon-wrapper bg-blue-100">
-              <i class="fas fa-graduation-cap text-2xl text-blue-600"></i>
-            </div>
-          </div>
-          <div class="tool-content">
-            <h3>LearnMaster</h3>
-            <p>Learning platform that allows uploading of course modules with lecture notes and quizzes</p>
-            <a href="#" class="btn">Launch Tool</a>
-          </div>
-        </div>
-        
-        <!-- Tool Card 2: CourseGeneratorAI -->
-        <div class="tool-card">
-          <div class="tool-image">
-            <div class="icon-wrapper bg-green-100">
-              <i class="fas fa-robot text-2xl text-green-600"></i>
-            </div>
-          </div>
-          <div class="tool-content">
-            <h3>CourseGeneratorAI</h3>
-            <p>Coming soon: Use AI to generate interactive courses from lecture notes</p>
-            <a class="btn btn-coming-soon">Coming Soon</a>
-          </div>
-        </div>
-        
-        <!-- Tool Card 3: FlashcardCreatorAI -->
-        <div class="tool-card">
-          <div class="tool-image">
-            <div class="icon-wrapper bg-purple-100">
-              <i class="fas fa-brain text-2xl text-purple-600"></i>
-            </div>
-          </div>
-          <div class="tool-content">
-            <h3>FlashcardCreatorAI</h3>
-            <p>Coming soon: Use AI to generate and use digital interactive flashcards to enhance memorization and learning</p>
-            <a class="btn btn-coming-soon">Coming Soon</a>
-          </div>
-        </div>
+      <div class="tools-container" id="toolsContainer">
+        <!-- Tools will be dynamically added here -->
       </div>
     </div>
   </section>
 
-  <!-- About Section -->
   <section class="about" id="about">
     <div class="container about-content">
       <h2 class="section-title">About RPBedu</h2>
@@ -513,7 +659,134 @@
     </div>
   </section>
 
-  <!-- Footer -->
+  <section class="legal-connect" id="legal-connect">
+    <div class="container">
+      <details class="section-details">
+        <summary class="section-summary">Legal & Connect</summary>
+        <div class="legal-connect-container">
+          <div class="legal-card" id="terms">
+            <details>
+              <summary>Terms of Service</summary>
+              <div class="legal-content">
+                <p>The software and services provided by RPBedu are offered "as is" without any warranties, express or implied. By using our tools, you acknowledge that:</p>
+                <ul>
+                  <li>RPBedu is not liable for any direct, indirect, incidental, or consequential damages arising from the use of our software.</li>
+                  <li>The content and functionality may change without notice.</li>
+                  <li>You are responsible for ensuring compliance with applicable laws and regulations.</li>
+                </ul>
+                <p>We strive to provide reliable tools, but we do not guarantee uninterrupted or error-free service. Use at your own risk.</p>
+              </div>
+            </details>
+          </div>
+          <div class="legal-card" id="privacy">
+            <details>
+              <summary>Privacy Policy</summary>
+              <div class="legal-content">
+                <p>At RPBedu, we prioritize your privacy but advise caution when sharing personal information. Our tools are provided "as is," and we encourage you to:</p>
+                <ul>
+                  <li>Avoid sharing sensitive personal data unless necessary.</li>
+                  <li>Review the privacy settings of any third-party services integrated with our tools.</li>
+                  <li>Understand that data transmitted over the internet may not be fully secure.</li>
+                </ul>
+                <p>We do not sell your data, but we may use anonymized analytics to improve our services. For detailed inquiries, contact us.</p>
+              </div>
+            </details>
+          </div>
+          <div class="legal-card" id="contact">
+            <details>
+              <summary>Contact Us</summary>
+              <div class="legal-content">
+                <p>For support, inquiries, or feedback, please reach out to us at:</p>
+                <p>Email: <a href="mailto:rpbedu01@protonmail.com">rpbedu01@protonmail.com</a></p>
+              </div>
+            </details>
+          </div>
+          <div class="legal-card" id="feedback">
+            <details>
+              <summary>Feedback</summary>
+              <div class="legal-content">
+                <p>We value your input to improve our tools. Please send your suggestions or comments to:</p>
+                <p>Email: <a href="mailto:rpbedu01@protonmail.com">rpbedu01@protonmail.com</a></p>
+                <p>Your feedback helps us enhance the educational experience for all users.</p>
+              </div>
+            </details>
+          </div>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <section class="admin-tools" id="admin-tools">
+    <div class="container">
+      <details class="section-details">
+        <summary class="section-summary">Admin Tools Management</summary>
+        <div class="admin-tools-container">
+          <div class="admin-card">
+            <h3>Add/Edit Tool</h3>
+            <form id="toolForm" class="admin-form">
+              <input type="hidden" id="toolId">
+              <div class="form-group">
+                <label for="toolName">Tool Name</label>
+                <input type="text" id="toolName" placeholder="e.g., LearnMaster">
+                <div id="toolNameError" class="error">Tool name is required</div>
+              </div>
+              <div class="form-group">
+                <label for="toolDescription">Description</label>
+                <textarea id="toolDescription" placeholder="e.g., Learning platform for course modules"></textarea>
+                <div id="toolDescriptionError" class="error">Description is required</div>
+              </div>
+              <div class="form-group">
+                <label for="toolIcon">Icon</label>
+                <select id="toolIcon">
+                  <option value="fa-graduation-cap">Graduation Cap</option>
+                  <option value="fa-robot">Robot</option>
+                  <option value="fa-brain">Brain</option>
+                  <option value="fa-book">Book</option>
+                  <option value="fa-chalkboard-teacher">Chalkboard Teacher</option>
+                  <option value="fa-laptop-code">Laptop Code</option>
+                  <option value="fa-user-graduate">User Graduate</option>
+                  <option value="fa-flask">Flask</option>
+                  <option value="fa-pen-nib">Pen Nib</option>
+                  <option value="fa-globe">Globe</option>
+                </select>
+                <div id="toolIconError" class="error">Icon is required</div>
+              </div>
+              <div class="form-group">
+                <label for="toolStatus">Status</label>
+                <select id="toolStatus">
+                  <option value="active">Active</option>
+                  <option value="coming-soon">Coming Soon</option>
+                </select>
+                <div id="toolStatusError" class="error">Status is required</div>
+              </div>
+              <div class="form-group">
+                <label for="toolUrl">URL</label>
+                <input type="url" id="toolUrl" placeholder="e.g., https://example.com/tool">
+                <div id="toolUrlError" class="error">Valid URL is required</div>
+              </div>
+              <div class="form-group">
+                <button type="submit" class="btn">Save Tool</button>
+                <button type="button" id="cancelEdit" class="btn btn-small" style="background-color: #6b7280; margin-left: 10px; display: none;">Cancel</button>
+              </div>
+            </form>
+            <div id="toolAlert" class="alert"></div>
+          </div>
+          <div class="admin-card">
+            <h3>Manage Tools</h3>
+            <div class="form-group">
+              <input type="file" id="importTools" accept=".json" style="margin-bottom: 15px;">
+              <button id="exportTools" class="btn btn-small" disabled>Export Tools (0)</button>
+            </div>
+            <div id="importAlert" class="alert"></div>
+            <div class="admin-tools-list" id="toolsList">
+              <!-- Tool items will be dynamically added here -->
+            </div>
+          </div>
+        </div>
+      </details>
+    </div>
+  </section>
+
   <footer>
     <div class="container">
       <div class="footer-content">
@@ -531,15 +804,15 @@
         <div class="footer-column">
           <h3>Legal</h3>
           <ul>
-            <li><a href="#">Terms of Service</a></li>
-            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#terms">Terms of Service</a></li>
+            <li><a href="#privacy">Privacy Policy</a></li>
           </ul>
         </div>
         <div class="footer-column">
           <h3>Connect</h3>
           <ul>
-            <li><a href="#">Contact Us</a></li>
-            <li><a href="#">Feedback</a></li>
+            <li><a href="#contact">Contact Us</a></li>
+            <li><a href="#feedback">Feedback</a></li>
           </ul>
         </div>
       </div>
@@ -550,7 +823,7 @@
   </footer>
 
   <script>
-    // Mobile Navigation Toggle
+    // Original JavaScript
     const mobileMenuBtn = document.getElementById('mobileMenuBtn');
     const navLinks = document.getElementById('navLinks');
     
@@ -558,22 +831,21 @@
       navLinks.classList.toggle('active');
     });
     
-    // Smooth scrolling for anchor links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       anchor.addEventListener('click', function(e) {
         e.preventDefault();
-        
         const targetId = this.getAttribute('href');
         if (targetId === '#') return;
-        
         const targetElement = document.querySelector(targetId);
         if (targetElement) {
+          const sectionDetails = targetElement.closest('.section-details');
+          if (sectionDetails && !sectionDetails.open) {
+            sectionDetails.open = true;
+          }
           window.scrollTo({
             top: targetElement.offsetTop - 70,
             behavior: 'smooth'
           });
-          
-          // Close mobile menu if open
           if (navLinks.classList.contains('active')) {
             navLinks.classList.remove('active');
           }
@@ -581,7 +853,6 @@
       });
     });
     
-    // Navbar background change on scroll
     window.addEventListener('scroll', function() {
       const navbar = document.querySelector('.navbar');
       if (window.scrollY > 50) {
@@ -591,14 +862,11 @@
       }
     });
     
-    // Animation for tool cards on scroll
-    const toolCards = document.querySelectorAll('.tool-card');
-    
     function checkVisibility() {
+      const toolCards = document.querySelectorAll('.tool-card');
       toolCards.forEach(card => {
         const rect = card.getBoundingClientRect();
         const isVisible = (rect.top <= window.innerHeight * 0.8);
-        
         if (isVisible) {
           card.style.opacity = '1';
           card.style.transform = 'translateY(0)';
@@ -606,16 +874,368 @@
       });
     }
     
-    // Set initial state for animations
-    toolCards.forEach(card => {
-      card.style.opacity = '0';
-      card.style.transform = 'translateY(20px)';
-      card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-    });
-    
-    // Check visibility on load and scroll
     window.addEventListener('load', checkVisibility);
     window.addEventListener('scroll', checkVisibility);
+
+    // Admin Tools Management JavaScript
+    let tools = [];
+    const defaultTools = [
+      {
+        id: '1',
+        name: 'LearnMaster',
+        description: 'Learning platform that allows uploading of course modules with lecture notes and quizzes',
+        icon: 'fa-graduation-cap',
+        status: 'active',
+        url: '#',
+        iconBg: 'bg-blue-100',
+        iconColor: 'text-blue-600'
+      },
+      {
+        id: '2',
+        name: 'CourseGeneratorAI',
+        description: 'Coming soon: Use AI to generate interactive courses from lecture notes',
+        icon: 'fa-robot',
+        status: 'coming-soon',
+        url: '#',
+        iconBg: 'bg-green-100',
+        iconColor: 'text-green-600'
+      },
+      {
+        id: '3',
+        name: 'FlashcardCreatorAI',
+        description: 'Coming soon: Use AI to generate and use digital interactive flashcards to enhance memorization and learning',
+        icon: 'fa-brain',
+        status: 'coming-soon',
+        url: '#',
+        iconBg: 'bg-purple-100',
+        iconColor: 'text-purple-600'
+      }
+    ];
+    const toolsContainer = document.getElementById('toolsContainer');
+    const toolForm = document.getElementById('toolForm');
+    const toolIdInput = document.getElementById('toolId');
+    const toolNameInput = document.getElementById('toolName');
+    const toolDescriptionInput = document.getElementById('toolDescription');
+    const toolIconSelect = document.getElementById('toolIcon');
+    const toolStatusSelect = document.getElementById('toolStatus');
+    const toolUrlInput = document.getElementById('toolUrl');
+    const cancelEditBtn = document.getElementById('cancelEdit');
+    const toolsList = document.getElementById('toolsList');
+    const importToolsInput = document.getElementById('importTools');
+    const exportToolsBtn = document.getElementById('exportTools');
+    const toolAlert = document.getElementById('toolAlert');
+    const importAlert = document.getElementById('importAlert');
+
+    function initAdmin() {
+      const savedTools = localStorage.getItem('rpbedu-tools');
+      if (savedTools) {
+        try {
+          const parsedTools = JSON.parse(savedTools);
+          if (Array.isArray(parsedTools) && parsedTools.length > 0) {
+            tools = parsedTools;
+          } else {
+            tools = [...defaultTools];
+            saveTools();
+          }
+        } catch (e) {
+          tools = [...defaultTools];
+          saveTools();
+        }
+      } else {
+        tools = [...defaultTools];
+        saveTools();
+      }
+      updateToolsDisplay();
+      toolForm.addEventListener('submit', handleToolSubmit);
+      cancelEditBtn.addEventListener('click', resetForm);
+      importToolsInput.addEventListener('change', handleImportTools);
+      exportToolsBtn.addEventListener('click', handleExportTools);
+    }
+
+    function updateToolsDisplay() {
+      toolsContainer.innerHTML = '';
+      toolsList.innerHTML = '';
+      exportToolsBtn.disabled = tools.length === 0;
+      exportToolsBtn.textContent = `Export Tools (${tools.length})`;
+
+      if (tools.length === 0) {
+        const emptyState = document.createElement('div');
+        emptyState.className = 'text-center';
+        emptyState.innerHTML = `
+          <p class="text-gray-500">No tools yet. Add a tool using the form above.</p>
+        `;
+        toolsContainer.appendChild(emptyState);
+        toolsList.appendChild(emptyState.cloneNode(true));
+        return;
+      }
+
+      tools.forEach(tool => {
+        toolsContainer.appendChild(createToolCard(tool));
+        toolsList.appendChild(createToolItem(tool));
+      });
+
+      // Update visibility for new cards
+      const newToolCards = document.querySelectorAll('.tool-card');
+      newToolCards.forEach(card => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+        card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+      });
+      setTimeout(checkVisibility, 0); // Ensure visibility check runs after render
+    }
+
+    function createToolCard(tool) {
+      const card = document.createElement('div');
+      card.className = 'tool-card';
+      card.innerHTML = `
+        <div class="tool-image">
+          <div class="icon-wrapper ${tool.iconBg}">
+            <i class="fas ${tool.icon} text-2xl ${tool.iconColor}"></i>
+          </div>
+        </div>
+        <div class="tool-content">
+          <h3>${tool.name}</h3>
+          <p>${tool.description}</p>
+          <a href="${tool.url}" target="_blank" rel="noopener noreferrer" class="btn${tool.status === 'coming-soon' ? ' btn-coming-soon' : ''}">
+            ${tool.status === 'coming-soon' ? 'Coming Soon' : 'Launch Tool'}
+          </a>
+        </div>
+      `;
+      return card;
+    }
+
+    function createToolItem(tool) {
+      const item = document.createElement('div');
+      item.className = 'tool-item';
+      item.innerHTML = `
+        <span>${tool.name} (${tool.status === 'coming-soon' ? 'Coming Soon' : 'Active'})</span>
+        <div class="tool-item-actions">
+          <button class="btn btn-small edit-tool" data-id="${tool.id}">Edit</button>
+          <button class="btn btn-small delete-tool" data-id="${tool.id}" style="background-color: #ef4444;">Delete</button>
+        </div>
+      `;
+      item.querySelector('.edit-tool').addEventListener('click', () => editTool(tool.id));
+      item.querySelector('.delete-tool').addEventListener('click', () => deleteTool(tool.id));
+      return item;
+    }
+
+    function handleToolSubmit(e) {
+      e.preventDefault();
+      let isValid = true;
+
+      const id = toolIdInput.value;
+      const name = toolNameInput.value.trim();
+      const description = toolDescriptionInput.value.trim();
+      const icon = toolIconSelect.value;
+      const status = toolStatusSelect.value;
+      const url = toolUrlInput.value.trim();
+
+      // Validation
+      if (!name) {
+        document.getElementById('toolNameError').style.display = 'block';
+        isValid = false;
+      } else {
+        document.getElementById('toolNameError').style.display = 'none';
+      }
+
+      if (!description) {
+        document.getElementById('toolDescriptionError').style.display = 'block';
+        isValid = false;
+      } else {
+        document.getElementById('toolDescriptionError').style.display = 'none';
+      }
+
+      if (!icon) {
+        document.getElementById('toolIconError').style.display = 'block';
+        isValid = false;
+      } else {
+        document.getElementById('toolIconError').style.display = 'none';
+      }
+
+      if (!status) {
+        document.getElementById('toolStatusError').style.display = 'block';
+        isValid = false;
+      } else {
+        document.getElementById('toolStatusError').style.display = 'none';
+      }
+
+      if (!url || !isValidUrl(url)) {
+        document.getElementById('toolUrlError').style.display = 'block';
+        isValid = false;
+      } else {
+        document.getElementById('toolUrlError').style.display = 'none';
+      }
+
+      if (!isValid) return;
+
+      const iconStyles = getIconStyles(icon);
+      const tool = {
+        id: id || Date.now().toString(),
+        name,
+        description,
+        icon,
+        status,
+        url,
+        iconBg: iconStyles.bg,
+        iconColor: iconStyles.color
+      };
+
+      if (id) {
+        const index = tools.findIndex(t => t.id === id);
+        tools[index] = tool;
+        showAlert('toolAlert', 'Tool updated successfully', 'success');
+      } else {
+        tools.push(tool);
+        showAlert('toolAlert', 'Tool added successfully', 'success');
+      }
+
+      saveTools();
+      updateToolsDisplay();
+      resetForm();
+    }
+
+    function getIconStyles(icon) {
+      switch (icon) {
+        case 'fa-graduation-cap':
+          return { bg: 'bg-blue-100', color: 'text-blue-600' };
+        case 'fa-robot':
+          return { bg: 'bg-green-100', color: 'text-green-600' };
+        case 'fa-brain':
+          return { bg: 'bg-purple-100', color: 'text-purple-600' };
+        case 'fa-book':
+          return { bg: 'bg-red-100', color: 'text-red-600' };
+        case 'fa-chalkboard-teacher':
+          return { bg: 'bg-teal-100', color: 'text-teal-600' };
+        case 'fa-laptop-code':
+          return { bg: 'bg-indigo-100', color: 'text-indigo-600' };
+        case 'fa-user-graduate':
+          return { bg: 'bg-yellow-100', color: 'text-yellow-600' };
+        case 'fa-flask':
+          return { bg: 'bg-green-200', color: 'text-green-700' };
+        case 'fa-pen-nib':
+          return { bg: 'bg-pink-100', color: 'text-pink-600' };
+        case 'fa-globe':
+          return { bg: 'bg-blue-200', color: 'text-blue-700' };
+        default:
+          return { bg: 'bg-blue-100', color: 'text-blue-600' };
+      }
+    }
+
+    function isValidUrl(string) {
+      try {
+        new URL(string);
+        return true;
+      } catch (_) {
+        return false;
+      }
+    }
+
+    function editTool(id) {
+      const tool = tools.find(t => t.id === id);
+      if (!tool) return;
+
+      toolIdInput.value = tool.id;
+      toolNameInput.value = tool.name;
+      toolDescriptionInput.value = tool.description;
+      toolIconSelect.value = tool.icon;
+      toolStatusSelect.value = tool.status;
+      toolUrlInput.value = tool.url;
+      cancelEditBtn.style.display = 'inline-block';
+
+      window.scrollTo({
+        top: document.getElementById('admin-tools').offsetTop - 70,
+        behavior: 'smooth'
+      });
+    }
+
+    function deleteTool(id) {
+      if (confirm('Are you sure you want to delete this tool?')) {
+        tools = tools.filter(t => t.id !== id);
+        saveTools();
+        updateToolsDisplay();
+        showAlert('toolAlert', 'Tool deleted successfully', 'success');
+      }
+    }
+
+    function resetForm() {
+      toolForm.reset();
+      toolIdInput.value = '';
+      cancelEditBtn.style.display = 'none';
+      document.querySelectorAll('.error').forEach(error => error.style.display = 'none');
+      toolAlert.style.display = 'none';
+    }
+
+    function saveTools() {
+      localStorage.setItem('rpbedu-tools', JSON.stringify(tools));
+    }
+
+    function handleExportTools() {
+      if (tools.length === 0) return;
+
+      const data = JSON.stringify(tools, null, 2);
+      const blob = new Blob([data], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `rpbedu-tools-${new Date().toISOString().split('T')[0]}.json`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    }
+
+    function handleImportTools(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const importedData = JSON.parse(e.target.result);
+          if (!Array.isArray(importedData)) {
+            throw new Error('Imported data is not an array');
+          }
+
+          const existingIds = new Set(tools.map(t => t.id));
+          const newTools = importedData.filter(t => !existingIds.has(t.id) && t.name && t.description && t.icon && t.status && t.url);
+
+          newTools.forEach((tool, index) => {
+            if (!tool.id) {
+              tool.id = Date.now().toString() + index;
+            }
+            const styles = getIconStyles(tool.icon);
+            tool.iconBg = styles.bg;
+            tool.iconColor = styles.color;
+          });
+
+          tools = [...tools, ...newTools];
+          saveTools();
+          updateToolsDisplay();
+          showAlert('importAlert', `Successfully imported ${newTools.length} tools`, 'success');
+          importToolsInput.value = '';
+        } catch (error) {
+          showAlert('importAlert', `Import failed: ${error.message || 'Invalid file format'}`, 'error');
+          importToolsInput.value = '';
+        }
+      };
+      reader.onerror = () => {
+        showAlert('importAlert', 'Error reading file', 'error');
+        importToolsInput.value = '';
+      };
+      reader.readAsText(file);
+    }
+
+    function showAlert(elementId, message, type) {
+      const alert = document.getElementById(elementId);
+      alert.className = `alert alert-${type}`;
+      alert.textContent = message;
+      alert.style.display = 'block';
+      setTimeout(() => {
+        alert.style.display = 'none';
+      }, 5000);
+    }
+
+    document.addEventListener('DOMContentLoaded', initAdmin);
   </script>
 </body>
 </html>
