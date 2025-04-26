@@ -1,0 +1,32 @@
+[
+  {
+    "id": "1",
+    "name": "LearnMaster",
+    "description": "Learning platform that allows uploading of course modules with lecture notes and quizzes",
+    "icon": "fa-graduation-cap",
+    "status": "active",
+    "url": "#",
+    "iconBg": "bg-blue-100",
+    "iconColor": "text-blue-600"
+  },
+  {
+    "id": "2",
+    "name": "CourseGeneratorAI",
+    "description": "Coming soon: Use AI to generate interactive courses from lecture notes",
+    "icon": "fa-robot",
+    "status": "coming-soon",
+    "url": "#",
+    "iconBg": "bg-green-100",
+    "iconColor": "text-green-600"
+  },
+  {
+    "id": "3",
+    "name": "FlashcardCreatorAI",
+    "description": "Coming soon: Use AI to generate and use digital interactive flashcards to enhance memorization and learning",
+    "icon": "fa-brain",
+    "status": "coming-soon",
+    "url": "#",
+    "iconBg": "bg-purple-100",
+    "iconColor": "text-purple-600"
+  }
+]
