@@ -90,3 +90,5 @@ Built with Font Awesome for icons.
 Inspired by the need for accessible educational tools.
 
 Thanks to the users for their feedback!
+
+© 2025 RPBedu. All rights reserved.
