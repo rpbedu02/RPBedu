@@ -22,6 +22,10 @@ Admin Interface: Dedicated section for managing tools, with validation, error al
 
 Legal & Connect: Includes Terms of Service, Privacy Policy, and contact/feedback sections.
 
+## Test the App
+
+You can test the app directly from the Github page https://rpbedu02.github.io/RPBedu/
+
 ## Installation
 
 To run the RPBedu WebApp locally or deploy it, follow these steps:
@@ -32,7 +36,9 @@ git clone https://github.com/rpbedu02/RPBedu.git
 cd RPBedu
 You can run the app locally by opening index.html in your browser
 
-### Serve the App: Since the app is a static HTML/CSS/JS project, you can serve it using a local server:
+### Serve the App: 
+
+Since the app is a static HTML/CSS/JS project, you can serve it using a local server:
 
  Using Python
 python -m http.server 8000
@@ -41,7 +47,7 @@ Or use any web server (e.g., Node.js http-server, Nginx, Apache).
 
 Open in Browser: Navigate to http://localhost:8000 (or the port provided by your server) to access the app.
 
-### Alternatively, deploy to a hosting service like GitHub Pages, Netlify, or Vercel for public access.
+Alternatively, deploy to a hosting service like GitHub Pages, Netlify, or Vercel for public access.
 
 ## Usage
 
@@ -63,38 +69,6 @@ Import Tools: Upload a JSON file or enter a URL to import tools. Invalid entries
 
 Export Tools: Download the current tool list as a JSON file.
 
-## JSON Format: The app expects JSON files in the following format:
-
-[
-  {
-    "id": "unique-id",
-    "name": "Tool Name",
-    "description": "Tool Description",
-    "icon": "fa-book",
-    "status": "active",
-    "url": "https://example.com/tool"
-  },
-  {
-    "id": "another-id",
-    "name": "StudyBuddy",
-    "description": "Collaborative study tool",
-    "icon": "fa-user-graduate",
-    "status": "coming-soon",
-    "url": "#"
-  }
-]
-
-
-## Supported icons: fa-graduation-cap, fa-robot, fa-brain, fa-book, fa-chalkboard-teacher, fa-laptop-code, fa-user-graduate, fa-flask, fa-pen-nib, fa-globe.
-
-id is optional (auto-generated if missing); url is optional for coming-soon tools.
-
-## Troubleshooting:
-
-If the default JSON URL fails to load (e.g., network issues), the app falls back to locally stored tools or an empty list.
-
-Check the browser console or alert messages for import errors (e.g., invalid JSON, skipped tools).
-
 ## License
 
 See the LICENSE file for details.
@@ -105,7 +79,9 @@ For support, feedback, or inquiries, reach out to us at:
 
 Email: rpbedu01@protonmail.com
 
-## GitHub Issues: Open an issue on this repository for bug reports or feature requests.
+## GitHub Issues: 
+
+Open an issue on this repository for bug reports or feature requests.
 
 ## Acknowledgments
 
