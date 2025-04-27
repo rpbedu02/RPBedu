@@ -39,7 +39,7 @@
         }
         </script><!DOCTYPE html>
 <html lang="en">
-<!-- RPBedu, RPBedu Hub, v2025Apr24 -->
+<!-- RPBedu, RPBedu Hub, v2025Apr26 -->
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -618,6 +618,15 @@
       background-color: #fee2e2;
       color: #991b1b;
     }
+    .form-group-inline {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+    .form-group-inline input {
+      flex-grow: 1;
+    }
   </style>
 </head>
 <body>
@@ -774,7 +783,15 @@
           <div class="admin-card">
             <h3>Manage Tools</h3>
             <div class="form-group">
+              <label for="importTools">Import from File</label>
               <input type="file" id="importTools" accept=".json" style="margin-bottom: 15px;">
+            </div>
+            <div class="form-group form-group-inline">
+              <label for="importUrl">Import from URL</label>
+              <input type="url" id="importUrl" placeholder="Enter JSON URL" value="https://raw.githubusercontent.com/rpbedu02/RPBedu/refs/heads/main/toolslist/rpbedu-tools-list.json">
+              <button id="importUrlBtn" class="btn btn-small">Import</button>
+            </div>
+            <div class="form-group">
               <button id="exportTools" class="btn btn-small" disabled>Export Tools (0)</button>
             </div>
             <div id="importAlert" class="alert"></div>
@@ -879,38 +896,6 @@
 
     // Admin Tools Management JavaScript
     let tools = [];
-    const defaultTools = [
-      {
-        id: '1',
-        name: 'LearnMaster',
-        description: 'Learning platform that allows uploading of course modules with lecture notes and quizzes',
-        icon: 'fa-graduation-cap',
-        status: 'active',
-        url: '#',
-        iconBg: 'bg-blue-100',
-        iconColor: 'text-blue-600'
-      },
-      {
-        id: '2',
-        name: 'CourseGeneratorAI',
-        description: 'Coming soon: Use AI to generate interactive courses from lecture notes',
-        icon: 'fa-robot',
-        status: 'coming-soon',
-        url: '#',
-        iconBg: 'bg-green-100',
-        iconColor: 'text-green-600'
-      },
-      {
-        id: '3',
-        name: 'FlashcardCreatorAI',
-        description: 'Coming soon: Use AI to generate and use digital interactive flashcards to enhance memorization and learning',
-        icon: 'fa-brain',
-        status: 'coming-soon',
-        url: '#',
-        iconBg: 'bg-purple-100',
-        iconColor: 'text-purple-600'
-      }
-    ];
     const toolsContainer = document.getElementById('toolsContainer');
     const toolForm = document.getElementById('toolForm');
     const toolIdInput = document.getElementById('toolId');
@@ -922,33 +907,56 @@
     const cancelEditBtn = document.getElementById('cancelEdit');
     const toolsList = document.getElementById('toolsList');
     const importToolsInput = document.getElementById('importTools');
+    const importUrlInput = document.getElementById('importUrl');
+    const importUrlBtn = document.getElementById('importUrlBtn');
     const exportToolsBtn = document.getElementById('exportTools');
     const toolAlert = document.getElementById('toolAlert');
     const importAlert = document.getElementById('importAlert');
+    const defaultJsonUrl = 'https://raw.githubusercontent.com/rpbedu02/RPBedu/refs/heads/main/toolslist/rpbedu-tools-list.json';
 
-    function initAdmin() {
-      const savedTools = localStorage.getItem('rpbedu-tools');
-      if (savedTools) {
-        try {
-          const parsedTools = JSON.parse(savedTools);
-          if (Array.isArray(parsedTools) && parsedTools.length > 0) {
-            tools = parsedTools;
-          } else {
-            tools = [...defaultTools];
-            saveTools();
-          }
-        } catch (e) {
-          tools = [...defaultTools];
-          saveTools();
+    async function initAdmin() {
+      // Always fetch default JSON on launch
+      try {
+        const response = await fetch(defaultJsonUrl);
+        if (!response.ok) {
+          throw new Error(`HTTP error: ${response.status}`);
         }
-      } else {
-        tools = [...defaultTools];
+        const importedData = await response.json();
+        const { newTools, skippedReasons } = processImportedTools(importedData);
+        tools = [...newTools];
         saveTools();
+        updateToolsDisplay();
+        let message = `Successfully imported ${newTools.length} tools on launch`;
+        if (skippedReasons.length > 0) {
+          message += `. Skipped ${skippedReasons.length} tools: ${skippedReasons.join('; ')}`;
+        }
+        showAlert('importAlert', message, newTools.length > 0 ? 'success' : 'error');
+      } catch (error) {
+        console.error('Failed to fetch default JSON:', error);
+        // Fallback to localStorage or empty array
+        const savedTools = localStorage.getItem('rpbedu-tools');
+        if (savedTools) {
+          try {
+            const parsedTools = JSON.parse(savedTools);
+            if (Array.isArray(parsedTools)) {
+              tools = parsedTools;
+            } else {
+              tools = [];
+            }
+          } catch (e) {
+            tools = [];
+          }
+        } else {
+          tools = [];
+        }
+        updateToolsDisplay();
+        showAlert('importAlert', `Failed to load default tools: ${error.message || 'Unable to fetch JSON'}`, 'error');
       }
-      updateToolsDisplay();
+
       toolForm.addEventListener('submit', handleToolSubmit);
       cancelEditBtn.addEventListener('click', resetForm);
       importToolsInput.addEventListener('change', handleImportTools);
+      importUrlBtn.addEventListener('click', handleUrlImport);
       exportToolsBtn.addEventListener('click', handleExportTools);
     }
 
@@ -962,7 +970,7 @@
         const emptyState = document.createElement('div');
         emptyState.className = 'text-center';
         emptyState.innerHTML = `
-          <p class="text-gray-500">No tools yet. Add a tool using the form above.</p>
+          <p class="text-gray-500">No tools yet. Add a tool or import from a JSON file/URL.</p>
         `;
         toolsContainer.appendChild(emptyState);
         toolsList.appendChild(emptyState.cloneNode(true));
@@ -1059,7 +1067,7 @@
         document.getElementById('toolStatusError').style.display = 'none';
       }
 
-      if (!url || !isValidUrl(url)) {
+      if (status === 'active' && (!url || !isValidUrl(url))) {
         document.getElementById('toolUrlError').style.display = 'block';
         isValid = false;
       } else {
@@ -1070,12 +1078,12 @@
 
       const iconStyles = getIconStyles(icon);
       const tool = {
-        id: id || Date.now().toString(),
+        id: id || generateUniqueId(),
         name,
         description,
         icon,
         status,
-        url,
+        url: url || '#', // Default URL for coming-soon tools
         iconBg: iconStyles.bg,
         iconColor: iconStyles.color
       };
@@ -1130,6 +1138,10 @@
       }
     }
 
+    function generateUniqueId() {
+      return Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
+    }
+
     function editTool(id) {
       const tool = tools.find(t => t.id === id);
       if (!tool) return;
@@ -1169,6 +1181,139 @@
       localStorage.setItem('rpbedu-tools', JSON.stringify(tools));
     }
 
+    function processImportedTools(importedData) {
+      if (!Array.isArray(importedData)) {
+        throw new Error('Imported data is not an array');
+      }
+
+      const validIcons = [
+        'fa-graduation-cap', 'fa-robot', 'fa-brain', 'fa-book',
+        'fa-chalkboard-teacher', 'fa-laptop-code', 'fa-user-graduate',
+        'fa-flask', 'fa-pen-nib', 'fa-globe'
+      ];
+      const validStatuses = ['active', 'coming-soon'];
+      const existingIds = new Set(tools.map(t => t.id));
+      const newTools = [];
+      const skippedReasons = [];
+
+      importedData.forEach((tool, index) => {
+        let isValid = true;
+        let reason = '';
+
+        // Validate and set defaults
+        const name = tool.name ? String(tool.name).trim() : '';
+        const description = tool.description ? String(tool.description).trim() : '';
+        let icon = tool.icon ? String(tool.icon).trim() : 'fa-graduation-cap';
+        let status = tool.status ? String(tool.status).trim() : 'active';
+        let url = tool.url ? String(tool.url).trim() : '#';
+        let id = tool.id ? String(tool.id).trim() : generateUniqueId();
+
+        // Ensure unique ID
+        if (existingIds.has(id)) {
+          id = generateUniqueId();
+        }
+
+        // Validation
+        if (!name) {
+          isValid = false;
+          reason = `Tool ${index + 1}: Missing name`;
+        }
+        if (!description) {
+          isValid = false;
+          reason = reason || `Tool ${index + 1}: Missing description`;
+        }
+        if (!validIcons.includes(icon)) {
+          icon = 'fa-graduation-cap'; // Fallback to default icon
+          reason = reason || `Tool ${index + 1}: Invalid icon, using default`;
+        }
+        if (!validStatuses.includes(status)) {
+          status = 'active'; // Fallback to default status
+          reason = reason || `Tool ${index + 1}: Invalid status, using default`;
+        }
+        if (status === 'active' && (!url || !isValidUrl(url))) {
+          isValid = false;
+          reason = reason || `Tool ${index + 1}: Invalid or missing URL for active tool`;
+        }
+
+        if (isValid) {
+          const styles = getIconStyles(icon);
+          newTools.push({
+            id,
+            name,
+            description,
+            icon,
+            status,
+            url,
+            iconBg: styles.bg,
+            iconColor: styles.color
+          });
+          existingIds.add(id);
+        } else {
+          skippedReasons.push(reason);
+        }
+      });
+
+      return { newTools, skippedReasons };
+    }
+
+    function handleImportTools(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const importedData = JSON.parse(e.target.result);
+          const { newTools, skippedReasons } = processImportedTools(importedData);
+          tools = [...tools, ...newTools];
+          saveTools();
+          updateToolsDisplay();
+          let message = `Successfully imported ${newTools.length} tools`;
+          if (skippedReasons.length > 0) {
+            message += `. Skipped ${skippedReasons.length} tools: ${skippedReasons.join('; ')}`;
+          }
+          showAlert('importAlert', message, newTools.length > 0 ? 'success' : 'error');
+          importToolsInput.value = '';
+        } catch (error) {
+          showAlert('importAlert', `Import failed: ${error.message || 'Invalid JSON format'}`, 'error');
+          importToolsInput.value = '';
+        }
+      };
+      reader.onerror = () => {
+        showAlert('importAlert', 'Error reading file', 'error');
+        importToolsInput.value = '';
+      };
+      reader.readAsText(file);
+    }
+
+    async function handleUrlImport() {
+      const url = importUrlInput.value.trim();
+      if (!url || !isValidUrl(url)) {
+        showAlert('importAlert', 'Please enter a valid URL', 'error');
+        return;
+      }
+
+      try {
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error(`HTTP error: ${response.status}`);
+        }
+        const importedData = await response.json();
+        const { newTools, skippedReasons } = processImportedTools(importedData);
+        tools = [...tools, ...newTools];
+        saveTools();
+        updateToolsDisplay();
+        let message = `Successfully imported ${newTools.length} tools from URL`;
+        if (skippedReasons.length > 0) {
+          message += `. Skipped ${skippedReasons.length} tools: ${skippedReasons.join('; ')}`;
+        }
+        showAlert('importAlert', message, newTools.length > 0 ? 'success' : 'error');
+        importUrlInput.value = defaultJsonUrl;
+      } catch (error) {
+        showAlert('importAlert', `URL import failed: ${error.message || 'Unable to fetch or parse JSON'}`, 'error');
+      }
+    }
+
     function handleExportTools() {
       if (tools.length === 0) return;
 
@@ -1184,47 +1329,6 @@
       URL.revokeObjectURL(url);
     }
 
-    function handleImportTools(e) {
-      const file = e.target.files[0];
-      if (!file) return;
-
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        try {
-          const importedData = JSON.parse(e.target.result);
-          if (!Array.isArray(importedData)) {
-            throw new Error('Imported data is not an array');
-          }
-
-          const existingIds = new Set(tools.map(t => t.id));
-          const newTools = importedData.filter(t => !existingIds.has(t.id) && t.name && t.description && t.icon && t.status && t.url);
-
-          newTools.forEach((tool, index) => {
-            if (!tool.id) {
-              tool.id = Date.now().toString() + index;
-            }
-            const styles = getIconStyles(tool.icon);
-            tool.iconBg = styles.bg;
-            tool.iconColor = styles.color;
-          });
-
-          tools = [...tools, ...newTools];
-          saveTools();
-          updateToolsDisplay();
-          showAlert('importAlert', `Successfully imported ${newTools.length} tools`, 'success');
-          importToolsInput.value = '';
-        } catch (error) {
-          showAlert('importAlert', `Import failed: ${error.message || 'Invalid file format'}`, 'error');
-          importToolsInput.value = '';
-        }
-      };
-      reader.onerror = () => {
-        showAlert('importAlert', 'Error reading file', 'error');
-        importToolsInput.value = '';
-      };
-      reader.readAsText(file);
-    }
-
     function showAlert(elementId, message, type) {
       const alert = document.getElementById(elementId);
       alert.className = `alert alert-${type}`;
@@ -1232,7 +1336,7 @@
       alert.style.display = 'block';
       setTimeout(() => {
         alert.style.display = 'none';
-      }, 5000);
+      }, 7000); // Extended to show detailed messages
     }
 
     document.addEventListener('DOMContentLoaded', initAdmin);
