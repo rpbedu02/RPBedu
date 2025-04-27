@@ -1,16 +1,26 @@
 [
   {
     "id": "1",
+    "name": "CourseModuleSharingPlatform",
+    "description": "Web app providing a basic platform for sharing and managing course modules, allowing users to upload, import, export, and search educational content.",
+    "icon": "fa-book",
+    "status": "active",
+    "url": "https://rpbedu02.github.io/CourseModuleSharingPlatform/",
+    "iconBg": "bg-red-100",
+    "iconColor": "text-red-600"
+  },
+  {
+    "id": "2",
     "name": "LearnMaster",
     "description": "Learning platform that allows uploading of course modules with lecture notes and quizzes",
     "icon": "fa-graduation-cap",
     "status": "active",
-    "url": "#",
+    "url": "https://rpbedu02.github.io/LearnMaster/",
     "iconBg": "bg-blue-100",
     "iconColor": "text-blue-600"
   },
   {
-    "id": "2",
+    "id": "3",
     "name": "CourseGeneratorAI",
     "description": "Coming soon: Use AI to generate interactive courses from lecture notes",
     "icon": "fa-robot",
@@ -20,7 +30,7 @@
     "iconColor": "text-green-600"
   },
   {
-    "id": "3",
+    "id": "4",
     "name": "FlashcardCreatorAI",
     "description": "Coming soon: Use AI to generate and use digital interactive flashcards to enhance memorization and learning",
     "icon": "fa-brain",
