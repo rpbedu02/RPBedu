@@ -24,8 +24,8 @@
     "name": "CourseGeneratorAI",
     "description": "Coming soon: Use AI to generate interactive courses from lecture notes",
     "icon": "fa-robot",
-    "status": "coming-soon",
-    "url": "#",
+    "status": "active",
+    "url": "https://rpbedu02.github.io/CourseGeneratorAI/",
     "iconBg": "bg-green-100",
     "iconColor": "text-green-600"
   },
