@@ -22,7 +22,7 @@
   {
     "id": "3",
     "name": "CourseGeneratorAI",
-    "description": "Coming soon: Use AI to generate interactive courses from lecture notes",
+    "description": "Use AI to generate interactive courses from lecture notes",
     "icon": "fa-robot",
     "status": "active",
     "url": "https://rpbedu02.github.io/CourseGeneratorAI/",
