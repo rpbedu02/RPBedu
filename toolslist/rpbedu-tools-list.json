@@ -41,6 +41,16 @@
   },
   {
     "id": "5",
+    "name": "LessonGeneratorAI",
+    "description": "Advanced cloud platform that utilizes AI to transform raw text into structured educational modules complete with lessons and interactive quizzes.",
+    "icon": "fa-chalkboard-teacher",
+    "status": "active",
+    "url": "https://lesson-generator-ai-google-ai-studi.vercel.app/",
+    "iconBg": "bg-teal-100",
+    "iconColor": "text-teal-600"
+  },
+  {
+    "id": "6",
     "name": "FlashcardCreatorAI",
     "description": "Coming soon: Use AI to generate and use digital interactive flashcard to enhance memorization and learning",
     "icon": "fa-brain",
